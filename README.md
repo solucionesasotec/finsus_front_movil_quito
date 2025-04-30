@@ -20,3 +20,8 @@ cambiar el icono de la app
 flutter pub get
 dart run flutter_launcher_icons
 '''
+cambiar el bundle Id 
+'''
+flutter pub get
+dart run change_app_package_name:main ec.finsus.bancamovil
+'''

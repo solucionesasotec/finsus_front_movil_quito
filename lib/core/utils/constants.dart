@@ -7,10 +7,10 @@ const String version = '2.0.0';
 const String numEmpresa = '+593967814555';
 const String msgEmpresa = 'Hola, necesito información';
 
-const String baseUrl = 'http://192.168.1.154:9000/wsConsulta-2.0.2'; //Oficina
+// const String baseUrl = 'http://192.168.1.154:9000/wsConsulta-2.0.2'; //Oficina
 // const String baseUrl = 'http://192.168.0.105:9000/wsConsulta-2.0.2'; //casa
 //const String baseUrl = 'http://190.123.34.157:9000/wsConsultaF-2.0.2'; //Dev
-// const String baseUrl = 'http://190.99.72.88:9000/wsConsulta-2.0.2'; //Finsus
+const String baseUrl = 'http://190.99.72.88:9000/wsConsulta-2.0.2'; //Finsus
 
 const String empresaEndpoint = '/empresa/get';
 
