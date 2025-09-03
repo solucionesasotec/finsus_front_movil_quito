@@ -9,7 +9,7 @@ class Garantia {
   final double valCapital;
   final double valTasaInteres;
   final double valSaldo;
-  final int numDiasMora;
+  final double numDiasMora;
   final double cfValSaldoPendiente;
 
   Garantia({
@@ -30,9 +30,9 @@ class Garantia {
       apeSocio: json['apeSocio'],
       valCapital: json['valCapital'],
       valTasaInteres: json['valTasaInteres'],
-      valSaldo: json['valSaldo'],
+      valSaldo: json['cfValSaldo'],
       numDiasMora: json['numDiasMora'],
-      cfValSaldoPendiente: json['cfValSaldoPendiente'],
+      cfValSaldoPendiente: json['cfSaldoPendiente'],
     );
   }
 }

@@ -107,23 +107,35 @@ class InfoRow extends StatelessWidget {
   final String label;
   final String value;
 
-  InfoRow({required this.label, required this.value});
+  const InfoRow({super.key, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Label fijo a la izquierda
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16.0,
             ),
           ),
-          Text(value),
+          const SizedBox(width: 8), // pequeño espacio entre label y value
+
+          // Value flexible, alineado a la derecha
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.right, // 👈 se mantiene a la derecha
+              softWrap: true, // 👈 permite saltar de línea
+              overflow: TextOverflow.visible,
+              style: const TextStyle(fontSize: 16.0),
+            ),
+          ),
         ],
       ),
     );
