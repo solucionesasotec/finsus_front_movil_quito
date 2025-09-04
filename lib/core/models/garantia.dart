@@ -10,6 +10,7 @@ class Garantia {
   final double valTasaInteres;
   final double valSaldo;
   final double numDiasMora;
+  final String cfTipo;
   final double cfValSaldoPendiente;
 
   Garantia({
@@ -20,6 +21,7 @@ class Garantia {
     required this.valTasaInteres,
     required this.valSaldo,
     required this.numDiasMora,
+    required this.cfTipo,
     required this.cfValSaldoPendiente,
   });
 
@@ -32,6 +34,7 @@ class Garantia {
       valTasaInteres: json['valTasaInteres'],
       valSaldo: json['cfValSaldo'],
       numDiasMora: json['numDiasMora'],
+      cfTipo: json['cfTipo'],
       cfValSaldoPendiente: json['cfSaldoPendiente'],
     );
   }

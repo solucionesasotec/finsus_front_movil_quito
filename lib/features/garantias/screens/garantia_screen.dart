@@ -74,22 +74,64 @@ class _GarantiaScreenState extends State<GarantiaScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      InfoRow(
-                        label: "Garante",
-                        value: '${garantia.apeSocio} ${garantia.nomSocio}',
+                      // 👉 Fila con el nombre del garante (arriba)
+                      Text(
+                        "Garante: ${garantia.apeSocio} ${garantia.nomSocio}",
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      InfoRow(
-                        label: "Capital",
-                        value: "\$${garantia.valCapital.toStringAsFixed(2)}",
-                      ),
-                      InfoRow(
-                        label: "Saldo pendiente",
-                        value:
-                            "\$${garantia.cfValSaldoPendiente.toStringAsFixed(2)}",
-                      ),
-                      InfoRow(
-                        label: "Estado",
-                        value: garantia.numDiasMora == 0 ? 'AL DÍA' : 'EN MORA',
+                      const SizedBox(height: 6),
+
+                      // 👉 Row con la info a la izquierda y el tipo a la derecha
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Columna izquierda con toda la info
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InfoRow(
+                                  label: "Capital",
+                                  value:
+                                      "\$${garantia.valCapital.toStringAsFixed(2)}",
+                                  alignRight:
+                                      false, // 👈 siempre pegado a la izquierda
+                                ),
+                                InfoRow(
+                                  label: "Saldo pendiente",
+                                  value:
+                                      "\$${garantia.cfValSaldoPendiente.toStringAsFixed(2)}",
+                                  alignRight: false,
+                                ),
+                                InfoRow(
+                                  label: "Estado",
+                                  value: garantia.numDiasMora == 0
+                                      ? 'AL DÍA'
+                                      : 'EN MORA',
+                                  alignRight: false,
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Texto a la derecha en el centro
+                          Container(
+                            margin: const EdgeInsets.only(left: 16.0),
+                            child: Text(
+                              garantia.cfTipo == "R" ? "Recibida" : "Concedidas",
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: garantia.cfTipo == "R"
+                                    ? Colors.green
+                                    : Colors.blue,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -106,33 +148,32 @@ class _GarantiaScreenState extends State<GarantiaScreen> {
 class InfoRow extends StatelessWidget {
   final String label;
   final String value;
+  final bool alignRight;
 
-  const InfoRow({super.key, required this.label, required this.value});
+  const InfoRow({
+    super.key,
+    required this.label,
+    required this.value,
+    this.alignRight = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Label fijo a la izquierda
           Text(
-            label,
+            "$label: ",
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16.0,
             ),
           ),
-          const SizedBox(width: 8), // pequeño espacio entre label y value
-
-          // Value flexible, alineado a la derecha
           Expanded(
             child: Text(
               value,
-              textAlign: TextAlign.right, // 👈 se mantiene a la derecha
-              softWrap: true, // 👈 permite saltar de línea
-              overflow: TextOverflow.visible,
+              textAlign: alignRight ? TextAlign.right : TextAlign.left,
               style: const TextStyle(fontSize: 16.0),
             ),
           ),
