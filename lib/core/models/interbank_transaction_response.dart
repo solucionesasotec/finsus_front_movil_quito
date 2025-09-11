@@ -1,7 +1,6 @@
 import 'package:bancamovil/core/models/interbank_transaction_data.dart';
 
 class InterbankTransactionResponse {
-
   final int? status;
   final String? message;
   final InterBankTransactionData? data;
@@ -18,13 +17,16 @@ class InterbankTransactionResponse {
 }
   */
 
-  InterbankTransactionResponse({required this.status, required this.message, required this.data});
+  InterbankTransactionResponse(
+      {required this.status, required this.message, required this.data});
 
   factory InterbankTransactionResponse.fromJson(Map<String, dynamic> json) {
     return InterbankTransactionResponse(
       status: json['status'],
       message: json['message'],
-      data: InterBankTransactionData.fromJson(json['data']),
+      data: json['data'] != null
+          ? InterBankTransactionData.fromJson(json['data'])
+          : null,
     );
   }
 }

@@ -153,6 +153,9 @@ class TransactionsService {
         print('Service-InterbankTranf-data: ${interbankTransfResp.data}');
         return interbankTransfResp;
       }
+      if(response.statusCode == 500){
+        print("Valio madres el servidor");
+      }
     } catch (e) {
       throw Exception('Error interbankTransaction Service: ${e.toString()}');
     }

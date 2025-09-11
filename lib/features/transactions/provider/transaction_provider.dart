@@ -157,6 +157,7 @@ class TransactionProvider with ChangeNotifier {
       if (interbankTransacResp != null) {
         if (interbankTransacResp.status == 1) {
           _isInterbankComplete = true;
+          print("Transaccion interbancaria completada correctamente");
 
         } else {
           switch (interbankTransacResp.message) {
@@ -164,8 +165,7 @@ class TransactionProvider with ChangeNotifier {
             //   _errorMessage = 'Mensaje';
             //   break;
             default:
-              _errorMessage =
-                  'Error desconocido: ${interbankTransacResp.message}';
+              _errorMessage = '${interbankTransacResp.message}';
           }
         }
       }

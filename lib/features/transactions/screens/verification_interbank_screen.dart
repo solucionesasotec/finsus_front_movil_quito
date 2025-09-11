@@ -20,6 +20,35 @@ class _VerificationInterbankScreenState
   final _codeController = TextEditingController();
   bool isCodeValid = true;
 
+  void _showErrorDialog(BuildContext context, String errorMessage) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: const Text(
+            'Error',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+                Navigator.of(context).pop(); // Cierra el diálogo
+                Navigator.of(context).pop(); // Cierra el diálogo
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _verifyCode(context, smsProvider) async {
     final Map<String, dynamic> dataTransfer =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
@@ -94,6 +123,13 @@ class _VerificationInterbankScreenState
             (Route<dynamic> route) =>
                 false, // Elimina todas las rutas anteriores
           );
+        } else {
+          if (smsProvider.errorMessage != null &&
+              smsProvider.errorMessage!.isNotEmpty) {
+            _showErrorDialog(context, smsProvider.errorMessage!);
+          } else {
+            _showErrorDialog(context, 'Ocurrió un error desconocido.');
+          }
         }
 
         // return;
