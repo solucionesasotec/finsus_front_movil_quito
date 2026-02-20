@@ -1,9 +1,9 @@
-
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+
 import 'package:path_provider/path_provider.dart';
+import 'package:saver_gallery/saver_gallery.dart';
 import 'package:screenshot/screenshot.dart';
 
 class TestScreen extends StatefulWidget {
@@ -14,26 +14,57 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  
   final ScreenshotController screenshotController = ScreenshotController();
 
   Future<void> _captureAndSaveScreenshot() async {
-    // Captura la pantalla
-    final image = await screenshotController.capture();
+    try {
+      // 1. Captura la pantalla directamente como bytes (Uint8List)
+      // Ya no necesitamos guardarlo en un archivo temporal intermedio.
+      final Uint8List? imageBytes = await screenshotController.capture();
 
-    if (image == null) return;
+      if (imageBytes == null) {
+        debugPrint("Error: No se pudo capturar la imagen.");
+        return;
+      }
 
-    // Guarda la imagen en un directorio temporal
-    final directory = await getTemporaryDirectory();
-    final imagePath = '${directory.path}/screenshot.png';
-    final imageFile = await File(imagePath).create();
-    await imageFile.writeAsBytes(image);
+      // 2. Genera un nombre de archivo único usando una marca de tiempo
+      String fileName = "Captura_${DateTime.now().millisecondsSinceEpoch}.png";
 
-    // Guarda la imagen en la galería
-    await GallerySaver.saveImage(imageFile.path, albumName: 'Screenshots');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Captura guardada en la galería')),
-    );
+      // 3. Guarda los bytes directamente en la galería usando la nueva librería
+      final result = await SaverGallery.saveImage(
+        imageBytes,
+        quality: 100,
+        name: "test_$fileName",
+        androidExistNotSave: false,
+      );
+
+      // 4. Verifica el resultado y notifica al usuario
+      if (!mounted)
+        return; // Verifica si el widget sigue activo antes de usar el contexto
+
+      if (result.isSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Captura guardada correctamente en la galería'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        // Si la librería reporta un fallo (aunque no lance excepción)
+        throw Exception("La galería reportó un error al intentar guardar.");
+      }
+    } catch (e) {
+      // Manejo de errores (ej. permisos denegados)
+      debugPrint("Error al guardar captura: $e");
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text('No se pudo guardar la captura. Verifica los permisos.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -61,7 +92,6 @@ class _TestScreenState extends State<TestScreen> {
           ),
         ),
       ),
-      
     );
   }
 }

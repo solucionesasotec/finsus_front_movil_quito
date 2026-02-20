@@ -166,8 +166,12 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    
+    kotlinOptions {
+        jvmTarget = "17"
     }
 
     defaultConfig {
@@ -198,4 +202,28 @@ android {
 
 flutter {
     source = "../.."
+}
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            // Forzar namespace si falta
+            if (project.android.namespace == null) {
+                if (project.name == "downloads_path_provider_28") {
+                    project.android.namespace = "it.nplace.downloadspathprovider"
+                } else {
+                    project.android.namespace = project.group
+                }
+            }
+            
+            // CONFIGURACIÓN PARA 16 KB (Requisito de Google Play)
+            project.android {
+                packagingOptions {
+                    jniLibs {
+                        useLegacyPackaging = false
+                    }
+                }
+            }
+        }
+    }
 }

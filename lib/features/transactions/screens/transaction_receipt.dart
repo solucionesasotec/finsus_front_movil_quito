@@ -1,11 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:bancamovil/features/home/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+import 'package:saver_gallery/saver_gallery.dart';
 import 'package:path_provider/path_provider.dart';
 
 class TransactionReceipt extends StatefulWidget {
@@ -40,22 +41,39 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
   final ScreenshotController screenshotController = ScreenshotController();
 
   Future<void> _captureAndSaveScreenshot() async {
-    // Captura la pantalla
-    final image = await screenshotController.capture();
+    try {
+      // 1. Captura la pantalla como Uint8List (bytes)
+      final Uint8List? imageBytes = await screenshotController.capture();
 
-    if (image == null) return;
+      if (imageBytes == null) return;
 
-    // Guarda la imagen en un directorio temporal
-    final directory = await getTemporaryDirectory();
-    final imagePath = '${directory.path}/ComprobanteTransferencia.png';
-    final imageFile = await File(imagePath).create();
-    await imageFile.writeAsBytes(image);
+      // 2. Guarda directamente en la galería usando los bytes
+      // El nombre del archivo debe ser único para evitar conflictos
+      String fileName =
+          "Comprobante_${widget.cuentaOrigen}_${DateTime.now().millisecondsSinceEpoch}.png";
 
-    // Guarda la imagen en la galería
-    await GallerySaver.saveImage(imageFile.path, albumName: 'Screenshots');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Captura guardada en la galería')),
-    );
+      final result = await SaverGallery.saveImage(
+        imageBytes,
+        quality: 100,
+        name: "Transferencia_$fileName",
+        androidExistNotSave: false,
+        // name: fileName,
+        // androidExistNotSave: false, // Guardar siempre aunque exista uno igual
+      );
+
+      if (result.isSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Comprobante guardado en la galería')),
+        );
+      } else {
+        throw Exception("Error al guardar");
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Error al guardar: $e'), backgroundColor: Colors.red),
+      );
+    }
   }
 
   @override
