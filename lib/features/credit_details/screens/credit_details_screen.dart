@@ -248,8 +248,6 @@ class _CreditDetailsScreenState extends State<CreditDetailsScreen> {
                           'N° ${creditDetail.numCuota.toStringAsFixed(0)}';
 
                       var cuota = creditDetail.valSaldoCapital +
-                          // creditDetail.valSaldoInteres +
-                          // creditDetail.valSaldoMora +
                           double.parse(
                               creditDetail.valSaldoInteres.toStringAsFixed(2)) +
                           double.parse(
