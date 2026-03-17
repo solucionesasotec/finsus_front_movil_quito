@@ -9,10 +9,10 @@ class Account {
   final String? stsCuenta;
   final String? fecStsCuenta;
   final String? txtReferencia;
-  final int valSaldo;
-  final int valEfectivo;
-  final int valCheques;
-  final int valBloqueado;
+  final double valSaldo;
+  final double valEfectivo;
+  final double valCheques;
+  final double valBloqueado;
   final int codOficina;
   final int codUsrmod;
   final String? fecUsrmod;
