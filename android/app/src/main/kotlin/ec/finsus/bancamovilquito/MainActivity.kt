@@ -1,4 +1,4 @@
-package ec.finsus.bancamovil
+package ec.finsus.bancamovilquito
 
 import io.flutter.embedding.android.FlutterActivity
 

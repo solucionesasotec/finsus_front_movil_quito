@@ -12,7 +12,7 @@
     
     <!-- android:label="bancamovil" -->
     <application
-        android:label="FINSUS EC"
+        android:label="FINSUS QUITO"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
