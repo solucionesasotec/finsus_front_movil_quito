@@ -21,12 +21,12 @@ class MovementsProvider with ChangeNotifier {
     try {
       MovementsResponse? movementsResp =
           await _movementsService.getMovements(desde, hasta, producto, cuenta);
+      print("movementsResp: ${movementsResp}");
       if (movementsResp != null) {
         if (movementsResp.status == 1) {
           // _transactions = movementsResp.data;
           // Invertir movimientos
           _transactions = movementsResp.data.reversed.toList();
-
         } else {
           switch (movementsResp.message) {
             case 'NO_RESULT':
@@ -38,7 +38,7 @@ class MovementsProvider with ChangeNotifier {
         }
       }
     } catch (e) {
-      print("Error provider al obtener transacciones: ${e}");
+      print("Error provider al obtener transacciones 1: ${e}");
       _transactions = [];
       _errorMessage = 'Error en el servidor. Inténtalo de nuevo.';
     } finally {
@@ -46,5 +46,4 @@ class MovementsProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
 }

@@ -21,15 +21,17 @@ class MovementsService {
         .replace(queryParameters: queryParams);
     var response = await http.post(uri);
 
+    print("Entra aqui");
+
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       MovementsResponse respMovements = MovementsResponse.fromJson(data);
 
-      // print('Service-Movements-status: ${desde}');
-      // print('Service-Movements-status: ${hasta}');
-      // print('Service-Movements-status: ${respMovements.status}');
-      // print('Service-Movements-message: ${respMovements.message}');
-      // print('Service-Movements-data: ${respMovements.data.length}');
+      print('Service-Movements-status: ${desde}');
+      print('Service-Movements-status: ${hasta}');
+      print('Service-Movements-status: ${respMovements.status}');
+      print('Service-Movements-message: ${respMovements.message}');
+      print('Service-Movements-data: ${respMovements.data.length}');
       return respMovements;
     }
     return null;

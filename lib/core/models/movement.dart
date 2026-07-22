@@ -9,7 +9,7 @@ class Movement {
   // final String fec_usrmod;
   final String? nom_transaccion;
   final String? sts_d_c;
-  final String? fecMovimiento;
+  final DateTime? fecMovimiento;
   final double valEfectivo;
   final double valCheques;
   final double valSaldo;
@@ -37,7 +37,9 @@ class Movement {
       // fec_usrmod: json['fec_usrmod'],
       nom_transaccion: json['nom_transaccion'],
       sts_d_c: json['sts_d_c'],
-      fecMovimiento: json['fecMovimiento'],
+      fecMovimiento: json['fecMovimiento'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['fecMovimiento'])
+          : null,
       valEfectivo: json['valEfectivo'],
       valCheques: json['valCheques'],
       valSaldo: json['valSaldo'],

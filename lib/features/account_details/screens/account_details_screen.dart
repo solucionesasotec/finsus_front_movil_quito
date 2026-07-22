@@ -285,8 +285,9 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                                 itemBuilder: (context, index) {
                                   final movement =
                                       transactionsProvider.transactions[index];
-                                  // final formattedDate = DateFormat('dd/MM/yyyy').format(movement.fecMovimiento);
-                                  final formattedDate = movement.fecMovimiento;
+                                  final formattedDate = DateFormat('dd/MM/yyyy')
+                                      .format(movement.fecMovimiento!);
+                                  // final formattedDate = movement.fecMovimiento;
                                   final isIncome =
                                       movement.sts_d_c == 'Ingreso';
                                   final valueStyle = TextStyle(
